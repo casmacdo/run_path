@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+	<script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+	<link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		#map {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="map"></div>
+
+	<script>
+		const style = {
+			"version": 8,
+			"sources": {
+				"osm": {
+					"type": "raster",
+					"tiles": ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
+					"tileSize": 256,
+					"attribution": "&copy; OpenStreetMap Contributors",
+					"maxzoom": 19
+				}
+			},
+			"layers": [
+				{
+					"id": "osm",
+					"type": "raster",
+					"source": "osm" // This must match the source key above
+				}
+			]
+		};
+		var map = new maplibregl.Map({
+			container: 'map',
+			style: style,
+			zoom: 0
+		});
+
+		map.on('load', function () {
+			// We use D3 to fetch the JSON here so that we can parse and use it separately
+			// from GL JS's use in the added source. You can use any request method (library
+			// or otherwise) that you want.
+
+			d3.json(
+				'run.geojson',
+				function (err, data) {
+					if (err) throw err;
+					const line = [];
+					for (let i = 0; i < data.features.length; i++) {
+						//let obj = data.features[i].geometry.coordinates;
+						line.push([data.features[i].geometry.coordinates[0], data.features[i].geometry.coordinates[1]]);
+					}
+					var lined = turf.lineString(line);
+					//console.log(lined.geometry.coordinates);
+					// save full coordinate list for later
+					//var coordinates = data.features[0].geometry.coordinates;
+					//console.log(coordinates)
+					var coordinates = lined.geometry.coordinates
+					// start by showing just the first coordinate
+					//data.features[0].geometry.coordinates = [coordinates[0]];
+					console.log(lined.geometry.coordinates[0])
+					lined.geometry.coordinates = [coordinates[0]];
+					// add it to the map
+					map.addSource('trace', { type: 'geojson', data: lined });
+					map.addLayer({
+						'id': 'trace',
+						'type': 'line',
+						'source': 'trace',
+						'paint': {
+							'line-color': 'red',
+							'line-opacity': 0.75,
+							'line-width': 5
+						}
+					});
+
+					// setup the viewport
+					map.jumpTo({ 'center': coordinates[0], 'zoom': 14 });
+					map.setPitch(20);
+
+					// on a regular basis, add more coordinates from the saved list and update the map
+					var i = 0;
+					var timer = window.setInterval(function () {
+						if (i < coordinates.length) {
+							//console.log(coordinates[i++])
+							console.log(lined.geometry.coordinates)
+							lined.geometry.coordinates.push(
+								coordinates[i]
+							);
+							map.getSource('trace').setData(lined);
+							map.panTo(coordinates[i], { duration: 0 });
+							i++;
+						} else {
+							window.clearInterval(timer);
+						}
+					}, 20);
+				}
+			);
+		});
+	</script>
+
+</body>
+
+</html>
