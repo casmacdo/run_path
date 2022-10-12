@@ -9,6 +9,7 @@
 	<link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<style>
 		body {
 			margin: 0;
@@ -26,6 +27,10 @@
 
 <body>
 	<div id="map"></div>
+	<audio controls autoplay>
+		<source src="kenny_beats_br_atlanta.mp3" type="audio/mpeg">
+	  Your browser does not support the audio element.
+	  </audio>
 
 	<script>
 		const style = {
@@ -52,12 +57,13 @@
 			style: style,
 			zoom: 0
 		});
-
+		var audio = new Audio('kenny_beats_br_atlanta.mp3');
+		audio.play();
 		map.on('load', function () {
 			// We use D3 to fetch the JSON here so that we can parse and use it separately
 			// from GL JS's use in the added source. You can use any request method (library
 			// or otherwise) that you want.
-
+			
 			d3.json(
 				'run.geojson',
 				function (err, data) {
@@ -99,7 +105,7 @@
 					var timer = window.setInterval(function () {
 						if (i < coordinates.length) {
 							//console.log(coordinates[i++])
-							console.log(lined.geometry.coordinates)
+							//console.log(lined.geometry.coordinates)
 							lined.geometry.coordinates.push(
 								coordinates[i]
 							);
@@ -118,3 +124,4 @@
 </body>
 
 </html>
+
