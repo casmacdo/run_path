@@ -81,3 +81,17 @@ body {
 .right.collapsed {
     transform: translateX(295px);
 }
+
+#wave-cont {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    z-index: 1;
+
+}
+#wave-inner{
+    position: relative;
+    width: 100%;
+    margin:auto 
+}
+

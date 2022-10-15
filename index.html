@@ -11,25 +11,56 @@
 	<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 	<script src="functions.js"></script>
 	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-</head>
+	<script src="https://unpkg.com/wavesurfer.js"></script>	
+	<script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.regions.min.js"></script>
 
+</head>
 <body>
 	<!-- map container -->
-	<div id="map"> 
+	<div id="wave-cont" >
+		<div id="wave-inner">
+			<div id="waveform"></div>
+		</div>
+	</div>
+	<div id="map">
 	<!-- left sidebar container -->
-	<div id="left" class="sidebar flex-center left collapsed">
+	<!-- <div id="left" class="sidebar flex-center left collapsed">
 		<div class="sidebar-content rounded-rect flex-center">
-			<audio controls >
-				<source src="kenny_beats_br_atlanta.mp3" type="audio/mpeg">
-			  Your browser does not support the audio element.
-			</audio>
 			<div class="sidebar-toggle rounded-rect left" onclick="toggleSidebar('left')">
 				&rarr;
 			</div>
-		</div>
+			</div>
+		</div> -->
 	</div>
 	<script>
+		    var wavesurfer = WaveSurfer.create({
+            container: '#waveform',
+            scrollParent: true,
+            autoCenter: false,
+            waveColor: '#4287f5',
+            plugins: [
+                WaveSurfer.regions.create({
+                    regionsMinLength: 2,
+                    regions: [
+                        {
+                            start: 5,
+                            end: 7,
+                            loop: true,
+                            color: 'hsla(0, 100%, 50%, 0.5)',
+                            minLength: 1
+                        }
+                    ],
+                    dragSelection: {
+                        slop: 5
+                    }
+                })
+            ]
+
+        });
+        wavesurfer.load('kenny_beats_br_atlanta.mp3');
+        wavesurfer.on('ready', function () {
+            wavesurfer.play();
+        });
 		const style = {
 			"version": 8,
 			"sources": {
@@ -59,7 +90,10 @@
 			// We use D3 to fetch the JSON here so that we can parse and use it separately
 			// from GL JS's use in the added source. You can use any request method (library
 			// or otherwise) that you want.
-			
+
+
+
+
 			d3.json(
 				'run.geojson',
 				function (err, data) {
@@ -95,7 +129,6 @@
 					// setup the viewport
 					map.jumpTo({ 'center': coordinates[0], 'zoom': 14 });
 					map.setPitch(20);
-
 					// on a regular basis, add more coordinates from the saved list and update the map
 					var i = 0;
 					var timer = window.setInterval(function () {
@@ -110,6 +143,7 @@
 							i++;
 						} else {
 							window.clearInterval(timer);
+							
 						}
 					}, 20);
 				}

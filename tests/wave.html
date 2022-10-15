@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.regions.min.js"></script>
+    <link href="style.css" rel='stylesheet' ><link>
+
+
+
+</head>
+<body>
+    
+    <script>
+        var wavesurfer = WaveSurfer.create({
+            container: '#waveform',
+            scrollParent: true,
+            autoCenter: false,
+            waveColor: '#4287f5',
+            plugins: [
+                WaveSurfer.regions.create({
+                    regionsMinLength: 2,
+                    regions: [
+                        {
+                            start: 5,
+                            end: 7,
+                            loop: true,
+                            color: 'hsla(0, 100%, 50%, 0.5)',
+                            minLength: 1
+                        }
+                    ],
+                    dragSelection: {
+                        slop: 5
+                    }
+                })
+            ]
+
+        });
+        wavesurfer.load('kenny_beats_br_atlanta.mp3');
+        wavesurfer.on('ready', function () {
+            wavesurfer.play();
+        });
+    </script>
+</body>
