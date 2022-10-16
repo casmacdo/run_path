@@ -82,16 +82,31 @@ body {
     transform: translateX(295px);
 }
 
-#wave-cont {
+/* 
+
+This took a while to figure out. The key seems to be absolute and relative positioning. 
+I wanted to position the audio player at the bottom-center of the page. 
+To do this, I wrapped the waveform div in two divs. 
+The outer div has absolute positioning, which means that it can be placed anywhere in the viewport. 
+I made the outer div fill the entire width of the screen and positioned it at the bottom. 
+In addition, I set the z-index to 1, which palces it on top of the map and makes it possible for the user to interact with the waveform, rather than the map. 
+The wave-inner div has relative positioning, which means that it is positioned relative to the div that contains it. 
+This inner div has its width set to 100% and margin set to auto.
+If I wanted to have the inner div take up less of the screen and be centered, I would change the width and keep the margin setting. 
+
+*/
+
+#wave-inner{
+    position: relative;
+    width: 100%;
+    margin:auto
+}
+
+#wave-outer {
     position: absolute;
     width: 100%;
     bottom: 0;
     z-index: 1;
+}
 
-}
-#wave-inner{
-    position: relative;
-    width: 100%;
-    margin:auto 
-}
 

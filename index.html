@@ -17,7 +17,7 @@
 </head>
 <body>
 	<!-- map container -->
-	<div id="wave-cont" >
+	<div id="wave-outer" >
 		<div id="wave-inner">
 			<div id="waveform"></div>
 		</div>
@@ -51,7 +51,9 @@
                         }
                     ],
                     dragSelection: {
-                        slop: 5
+                        slop: 5,
+						loop: true,
+						
                     }
                 })
             ]
