@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8" />
 	<title>Run Path</title>
@@ -11,20 +12,21 @@
 	<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 	<script src="functions.js"></script>
 	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	<script src="https://unpkg.com/wavesurfer.js"></script>	
+	<script src="https://unpkg.com/wavesurfer.js"></script>
 	<script src="https://unpkg.com/wavesurfer.js/dist/plugin/wavesurfer.regions.min.js"></script>
 
 </head>
+
 <body>
 	<!-- map container -->
-	<div id="wave-outer" >
+	<div id="wave-outer">
 		<div id="wave-inner">
 			<div id="waveform"></div>
 		</div>
 	</div>
 	<div id="map">
-	<!-- left sidebar container -->
-	<!-- <div id="left" class="sidebar flex-center left collapsed">
+		<!-- left sidebar container -->
+		<!-- <div id="left" class="sidebar flex-center left collapsed">
 		<div class="sidebar-content rounded-rect flex-center">
 			<div class="sidebar-toggle rounded-rect left" onclick="toggleSidebar('left')">
 				&rarr;
@@ -33,36 +35,36 @@
 		</div> -->
 	</div>
 	<script>
-		    var wavesurfer = WaveSurfer.create({
-            container: '#waveform',
-            scrollParent: true,
-            autoCenter: false,
-            waveColor: '#4287f5',
-            plugins: [
-                WaveSurfer.regions.create({
-                    regionsMinLength: 2,
-                    regions: [
-                        {
-                            start: 5,
-                            end: 7,
-                            loop: true,
-                            color: 'hsla(0, 100%, 50%, 0.5)',
-                            minLength: 1
-                        }
-                    ],
-                    dragSelection: {
-                        slop: 5,
+		var wavesurfer = WaveSurfer.create({
+			container: '#waveform',
+			scrollParent: true,
+			autoCenter: false,
+			waveColor: '#4287f5',
+			plugins: [
+				WaveSurfer.regions.create({
+					regionsMinLength: 2,
+					regions: [
+						{
+							start: 5,
+							end: 7,
+							loop: true,
+							color: 'hsla(0, 100%, 50%, 0.5)',
+							minLength: 1
+						}
+					],
+					dragSelection: {
+						slop: 5,
 						loop: true,
-						
-                    }
-                })
-            ]
 
-        });
-        wavesurfer.load('kenny_beats_br_atlanta.mp3');
-        wavesurfer.on('ready', function () {
-            wavesurfer.play();
-        });
+					}
+				})
+			]
+
+		});
+		wavesurfer.load('kenny_beats_br_atlanta.mp3');
+		wavesurfer.on('ready', function () {
+			wavesurfer.play();
+		});
 		const style = {
 			"version": 8,
 			"sources": {
@@ -87,7 +89,7 @@
 			style: style,
 			zoom: 0
 		});
-		
+
 		map.on('load', function () {
 			// We use D3 to fetch the JSON here so that we can parse and use it separately
 			// from GL JS's use in the added source. You can use any request method (library
@@ -145,7 +147,7 @@
 							i++;
 						} else {
 							window.clearInterval(timer);
-							
+
 						}
 					}, 20);
 				}
@@ -156,4 +158,3 @@
 </body>
 
 </html>
-
